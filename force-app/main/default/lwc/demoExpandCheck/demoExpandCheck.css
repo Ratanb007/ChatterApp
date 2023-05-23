@@ -1,0 +1,11 @@
+.wrapper {
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+  }
+  .wrapper.expanded {
+    height: 100%;
+  }
+  .content {
+height: 70px;
+width: 800px;
+background-color: red;  }

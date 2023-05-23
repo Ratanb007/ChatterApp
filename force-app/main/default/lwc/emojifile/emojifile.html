@@ -1,0 +1,171 @@
+<template>
+    
+    <div class="slds-grid slds-border_bottom fixed-header">
+        <!-- <span class="slds-icon_container slds-icon-utility-chat slds-chat-icon">
+            <lightning-icon icon-name="utility:chat" alternative-text="Chat" size="x-small" title="Chatting with"></lightning-icon>
+        </span> -->
+    <div style="margin-left: 10px;height: 30px;width: 40px;" >
+            <img class="chatroom__avatar" src={toimgurl} />
+    </div>
+        <p style="font-family:cursive;font:bold;color:black;margin-left: 7px;"><b>{toName}</b>
+   
+        </p>
+        <div class="slds-p-around_small">
+            <lightning-button-group class="close_button ">
+                <lightning-button-menu alternative-text="Show menu">
+                    <lightning-menu-item label="Delete" value="item1"></lightning-menu-item>
+                    <lightning-menu-item label="Mark as Unread" value="item2"></lightning-menu-item>
+                    <lightning-menu-item label="Archive" value="item3"></lightning-menu-item>
+                </lightning-button-menu>
+    
+                <lightning-button-icon icon-name="utility:expand_alt"></lightning-button-icon>
+                <lightning-button-icon icon-name="utility:video"></lightning-button-icon>
+                <lightning-button-icon icon-name="utility:close"  alternative-text="Close" title="Close" onclick={handleCloseChat}></lightning-button-icon>
+    
+            </lightning-button-group>
+        </div>
+        
+         
+    </div>
+    <!-- <div>
+        <lightning-input placeholder="search message" type="search" onchange={handleSearchInputChange}></lightning-input>
+        <lightning-button label="Search" onclick={handleSearchButtonClick}></lightning-button>
+
+        
+    </div> -->
+
+
+    <div class="chatroom__messages">
+        <template if:true={isTyping}>
+            <div class="chatroom__typing-wrap slds-m-vertical_small">
+                <div class="chatroom__typing">
+                    <div class="chatroom__typing-line slds-m-horizontal_xx-small"></div>
+                    <div class="chatroom__typing-line slds-m-horizontal_xx-small"></div>
+                    <div class="chatroom__typing-line slds-m-horizontal_xx-small"></div>
+                </div>
+            </div>
+        </template>
+        <section role="log" class="slds-chat">
+        <ul class="slds-chat-list">
+            <div class="slds-chat-message__text slds-chat-message__text_inbound">
+                <template for:each={wiredMessages1.data} for:item="message">
+                    <template if:true={message.isCurrentUserMsg__c} >   
+                        <!-- sending the msg -->
+                        <li key={message.User__r.CreatedById} class="slds-chat-listitem slds-chat-listitem_outbound slds-p-around_xx-small ">
+                            <div class="slds-chat-message">
+                                <div class="slds-chat-message__body">
+                                    <!-- text and media content -->
+                                    <div class="slds-chat-message__text slds-p-around_xx-small background-color: white;">
+                                        <template if:false={message.isshowImage}>
+                                            <div class="slds-m-bottom_small" style="margin-right: -10px;">
+                                                <span aria-hidden="true" class="slds-avatar slds-avatar_circle slds-chat-avatar ">
+                                                    <abbr class="slds-avatar__initials slds-avatar__initials_inverse" >
+                                                        <img class="chatroom__avatar" src={message.User__r.MediumPhotoUrl} />
+                                                    </abbr>
+                                                </span>
+                                            </div>
+                                        </template>
+                                        <template if:true={message.isMediaMessage__c} >
+                                            
+                                            <a href={message.docUrl}>{message.docName}</a>
+                                            <br>
+                                            <span>{message.Content__c}</span>
+                                            
+                                        </template>
+
+                                        <template if:false={message.isMediaMessage__c} >
+                                            <p style="inline-size: 180px;
+                                        overflow-wrap: break-word;">{message.Content__c}</p>
+                                        </template>
+                                    </div>
+                                    <!-- date -->
+                                    <div class="slds-chat-message__meta" aria-label={message.CreatedDate}>
+                                        <lightning-formatted-date-time style="color: slategrey;" value={message.CreatedDate} 
+                                            hour="2-digit" time-zone={TIME_ZONE} 
+                                            minute="2-digit" hour12="false">
+                                        </lightning-formatted-date-time>
+                                    </div>
+                            </div>
+                           
+                            
+                            </div>
+                        </li>
+                    </template>
+
+                    <template if:false={message.isCurrentUserMsg__c} >
+                        <!-- recieving the msg -->
+                        <li key={message.User__r.CreatedById} class="slds-chat-listitem slds-chat-listitem_inbound slds-p-around_xx-small" style="text-align: left;">
+                            <div class="slds-chat-message">       
+                                <div class="slds-chat-message__body">
+                                <div class="slds-chat-message__text slds-p-around_xx-small ">
+                                    <template if:false={message.isshowImage}>
+                                        <div class="slds-m-bottom_small">
+                                            <span aria-hidden="true" class="slds-avatar slds-avatar_circle slds-chat-avatar">
+                                                <abbr class="slds-avatar__initials slds-avatar__initials_inverse" >
+                                                    <img class="chatroom__avatar" src={message.User__r.MediumPhotoUrl} />
+                                                </abbr>
+                                            </span>
+                                        </div>
+                                        
+                                    </template>
+                                    <template if:true={message.isMediaMessage__c} >
+                                        <a href={message.docUrl}>{message.docName}</a>
+                                        <br>
+                                        <span>{message.Content__c}</span>
+                                    
+                                    </template>
+                                    <template if:false={message.isMediaMessage__c} >
+                                        <p style="inline-size: 180px;
+                                    overflow-wrap: break-word;">{message.Content__c}</p>
+                                    </template>
+                                </div>
+                                <div class="slds-chat-message__meta" aria-label={message.CreatedDate}>
+                                    <lightning-formatted-date-time style="color: slategrey;" value={message.CreatedDate} 
+                                    hour="2-digit" time-zone={TIME_ZONE} 
+                                    minute="2-digit" hour12="false"></lightning-formatted-date-time>
+                                </div>
+                                </div>
+                            </div>
+                            </li>
+
+                    </template>
+                </template>
+            </div>
+            
+        </ul>
+        </section>
+    </div>
+    <div>
+        
+    </div>
+
+
+    <div class="fixed-footer" >
+        
+        <div class="send-message-form slds-border_top " >
+             <div class="slds-box ">  
+                <div class="slds-m-around_medium">
+                    <div>
+                        <lightning-input type="text" value={msgValue} class="send-message-form " placeholder={inputPlaceholderText} onchange={onNameChange} style="height:60px;"></lightning-input> 
+                    </div>
+                    <div class="ratan" style="width: 100%;">
+                        <!-- <div style='float: left;width: 70%; '>
+                            <input type="file"  onclick={onFileUpload}  name="uploadFile">   
+                         </div> -->
+                       
+                         <lightning-button-group class="slds-m-top_small slds-m-bottom_small">
+
+                            <lightning-button-icon  class="chatroom__icon "  icon-name="utility:image" variant="container"></lightning-button-icon>
+                            <lightning-button-icon icon-name="utility:attach"  variant="container" label="attach a file to your conversation" onclick={onFileUpload}></lightning-button-icon>
+                            <lightning-button-icon icon-name="utility:emoji"  variant="container"></lightning-button-icon>
+                            <lightning-button  label="Send" onclick={Sendmsg} class="slds-m-left_xx-large" style="margin-left: 170px;"> </lightning-button> 
+
+                         </lightning-button-group>
+
+                    </div>
+                    </div>
+                 
+              </div>  
+            </div>
+        </div>
+</template>

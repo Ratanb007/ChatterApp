@@ -1,0 +1,265 @@
+.chatroom__sidebar {
+  background-color: #FAFAFA;
+}
+
+
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+ul.hide {
+  display: none !important;
+}
+
+ul.show {
+  display: block !important;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  z-index: 999;
+}
+/* .chatroom__messages {
+  
+  direction: rtl;
+  overflow: scroll;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);  
+} */
+.chatroom__messagesSecond {
+  /* width: 128%!important; */
+  display: flex;
+  /* right: 28% !important; */
+  position: relative; 
+  flex-direction: column;
+}
+
+.ExpandCLassCss{
+  width: 370px;   
+  /* width: 280px;    */
+
+}
+
+.ExpandCLassCssMinn{
+  width: 280px;   
+  /* width: 304px;    */
+
+}
+/* .chatMsgCha{
+  
+  width: 30%;
+} */
+ .chatMsgChaMinimize{
+  
+    /* width: 30%; */
+    top: 79% !important;
+} 
+/* .chatPosCls{
+  position: fixed;
+  right: 30%;
+  top: 17%;
+} */
+.chatroom__enter-button {
+  direction: rtl;
+  left: 45%;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+/* .chatroom__messages li {
+  direction: ltr;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+} */
+
+.chatroom__messages li:hover {
+  background-color: #f2f2f2;
+  border-radius: 15px;
+  cursor: pointer;
+}
+.chatroom__icon :hover {
+  background-color: #f2f2f2;
+  border-radius: 20px;
+  cursor: pointer;
+
+}
+
+.chatroom__message-time {
+  color: #cccccc;
+  font-size: 11px;
+  font-weight: normal;
+}
+
+.chatroom__content {
+  line-height: 1.7;
+  margin-left: 10px;
+  text-align: left;
+}
+
+.chatroom__avatar {
+  align-items: center;
+  background-color: #f2f2f2;
+  border-radius: 50%;
+  color: #CCCCCC;
+  display: flex;
+  height: 35px;
+  justify-content: center;
+  width: 35px;
+}
+
+.chatroom__avatar--small {
+  font-size: 10px;
+  height: 24px;
+  width: 25px;
+}
+
+.chatroom__usernames {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.chatroom__username {
+  font-weight: bold;
+}
+
+
+
+/* .img {
+  opacity: 0;
+}
+
+.img:hover {
+  opacity: 1; 
+} */
+
+
+
+.send-message-form input {
+  border: none;
+  font-size: 16px;
+  padding: 20px;
+  width: 100%;
+  
+
+
+}
+
+.send-message-form input::placeholder {
+  color: #bbbbbb;
+}
+
+.send-message-form button {
+  display: none;
+}
+
+.chatroom__typing-wrap {
+  text-align: center;
+}
+
+.chatroom__typing-wrap:last-child {margin-right: 0;}
+
+.chatroom__typing-line {
+  background-color: #c3373a;
+  border-radius: 15px;
+  display: inline-block;
+  height: 15px;
+  width: 15px;
+}
+
+
+.wrapDateAndTime{
+  /* inline-size: 118px; 
+  overflow: hidden; */
+  font-family:cursive;color:black;font-size: xx-small;
+}
+.close_button{
+  position: fixed;
+  right: 2%;
+  top: 18%;
+}
+.fileImgClass{
+  height: 50px;
+}
+.fixed-header{
+  position: sticky;        
+  padding: 10px 0;
+  background:white;
+  top: 0;
+  /* z-index: 5; */
+}
+
+.fixed-footer{
+    bottom: 0;
+    position: sticky;        
+    padding: 0px ;
+    background:white;
+}  
+.selfChat{
+  justify-content: flex-end;
+
+}
+.userChat{
+  justify-content: flex-start;
+
+}
+.slds-chat-message__text_inbound{
+  background-color : white !important;
+  width : 100% !important;
+}
+.slds-form-element__label{
+  display:none !important;
+}
+.slds-theme_default {
+  width: 100% !important;
+  padding : 0px !important;
+}
+
+.chatroom__typing .chatroom__typing-line:nth-last-child(1) {animation: loadingC .6s .1s linear infinite;}
+.chatroom__typing .chatroom__typing-line:nth-last-child(2) {animation: loadingC .6s .2s linear infinite;}
+.chatroom__typing .chatroom__typing-line:nth-last-child(3) {animation: loadingC .6s .3s linear infinite;}
+
+/*@keyframes loadingC {
+  0 {transform: translate(0,0);}
+  50% {transform: translate(0,15px);}
+  100% {transform: translate(0,0);}
+}*/
+
+.slds-box{
+  padding: 0;
+    border: 0;
+}
+
+.emoji-icon
+{
+font-size: medium;
+}
+
+
+.image-upload > input
+{
+    display: none;
+}
+
+.image-upload img
+{
+    width: 80px;
+    cursor: pointer;
+}
+.slds-modal__container{
+  position: fixed;
+    top: 200px;
+    right: 40;
+    bottom: 35px;
+    left: 903px;
+    z-index: 9001;
+    width: 20px;
+    height: 70%;
+}

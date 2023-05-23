@@ -1,0 +1,591 @@
+<template>
+    <!-- slds-border_top slds-border_left slds-border_bottom  -->
+    <div  data-value="chatMainDiv" class={className} style="background-color: white;     margin-left: 5px;">
+        <!-- slds-border_bottom slds-grid  -->
+    <div  class=" fixed-header" style="display: flex; justify-content: center; height: 70px; width: 100%;">
+        <!-- <span class="slds-icon_container slds-icon-utility-chat slds-chat-icon">
+            <lightning-icon icon-name="utility:chat" alternative-text="Chat" size="x-small" title="Chatting with"></lightning-icon>
+        </span> -->
+        <div style="float: left; display: flex;  align-items: flex-start; align-self: center; width: 59%;">
+            <div style="margin-left: 5px;height: 30px;width: 40px;" >
+                <img class="chatroom__avatar" src={toimgurl} />
+                
+        </div>
+        <div style=" height: 40px;display: flex;display: flex;
+        flex-direction: column; overflow-wrap: anywhere;">
+
+        <div style="display: flex; height: 30px;width: 100%;">
+            <p style="font-family:cursive;font:bold;color:black;margin-left: 7px;"><b>{toName}</b>
+                <br>
+
+              
+              
+            </p>
+            <p style="font-family:cursive;font:bold;color:black;margin-left: 7px;font-size: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70px;
+            ">
+<!-- {usersName} -->
+</p> 
+            <!-- <div style="flex-direction:column ;">
+                <p style="flex-direction:column ; max-lines: 1;">
+                <template for:each={userArray} for:item="user" >
+                    <p key={user.Id} style="font-family:cursive;font:bold;color:black;margin-left: 7px;font-size: 6px;
+                    ">
+{user.User__r.CommunityNickname}
+</p> 
+                </template>
+            </p>
+            </div> -->
+        </div>
+        
+        <div if:true={seen} style="font-size: 9px; margin-left: 7px;     margin-top: 5px;">
+            {seen}
+            <div style="height: 8px; width: 8px; background-color: green; border-radius: 4px;float: left;
+            margin-top: 2px;
+            margin-right: 4px;" if:true={isOnline}></div>
+            <div if:false={isOnline} style="height: 8px; width: 8px; background-color: rgb(240, 9, 9); border-radius: 4px;float: left;
+            margin-top: 2px;
+            margin-right: 4px;" ></div>
+
+        </div>
+        
+        
+    </div>
+
+        </div>
+        
+        <div class="slds-p-around_small" style="float: right;
+        display: flex;
+        align-items: flex-start;
+        align-self: center;
+        width: 50%;
+        height: 57px;
+        justify-content: flex-end;">
+
+            <div style="display: flex;
+            align-self: center;
+            justify-content: center;">
+            <lightning-button-group >
+                <lightning-button-icon icon-name={IconValue} onclick={handleMinimize}></lightning-button-icon>
+
+                <!-- <lightning-button-menu alternative-text="Show menu">
+                    <lightning-menu-item label="Delete" value="item1"></lightning-menu-item>
+                    <lightning-menu-item label="Mark as Unread" value="item2"></lightning-menu-item>
+                    <lightning-menu-item label="Archive" value="item3"></lightning-menu-item>
+                </lightning-button-menu>
+     -->
+                <lightning-button-icon icon-name="utility:expand_alt" onclick={handleClick1}></lightning-button-icon>
+                <!-- <lightning-button-icon icon-name="utility:video" disabled="true"></lightning-button-icon> -->
+                <lightning-button-icon icon-name="utility:close"  alternative-text="Close" title="Close" onclick={handleCloseChat}></lightning-button-icon>
+    
+            </lightning-button-group>
+        </div>
+        </div>
+      
+       
+    </div>
+    <div class="slds-border_bottom slds-border_bottom " >
+
+    </div>
+    <!-- <div>
+        <lightning-input placeholder="search message" type="search" onchange={handleSearchInputChange}></lightning-input>
+        <lightning-button label="Search" onclick={handleSearchButtonClick}></lightning-button>
+
+        
+    </div> -->
+
+   
+
+    <template if:false={toMinimize}>
+
+    <div data-value="divblock"  style="height: 285px; overflow:scroll;  display: flex;
+    flex-direction: column-reverse;" class="chatroom__messages">
+        <template if:true={isTyping}>
+            <div class="chatroom__typing-wrap slds-m-vertical_small">
+                <div class="chatroom__typing">
+                    <div class="chatroom__typing-line slds-m-horizontal_xx-small"></div>
+                    <div class="chatroom__typing-line slds-m-horizontal_xx-small"></div>
+                    <div class="chatroom__typing-line slds-m-horizontal_xx-small"></div>
+                </div>
+            </div>
+        </template>
+        <section role="log" class="slds-chat">
+        <ul class="slds-chat-list " style="    width: 100% !important;
+        display: contents;">
+            <!-- expand big screen   slds-chat-message__text  -->
+            <div class="slds-chat-message__text_inbound">
+                <template for:each={wiredMessages1.data} for:item="message" if:false={toMinimize}>
+                    
+                    <template if:true={message.isCurrentUserMsg__c}  > 
+                         
+                        <!-- sending the msg -->
+                        <li id={myDivID} key={message.User__r.CreatedById}  class="slds-chat-listitem slds-chat-listitem_inbound userChat " style="text-align: left;">
+                            <div style="width: 100%; display: flex; flex-direction: column;">
+                            <div class="slds-chat-message" style=" display: flex;
+                            width: 100%;">
+                                <div class="slds-chat-message__body" style="display: flex;
+                                width: 100%;">
+                                    <!-- text and media content -->
+                                    <div class="slds-chat-message__text slds-p-around_xx-small background-color: white; display: flex;
+                                    width: 100%;">
+                                        <template if:false={message.isshowImage}>
+                                            <div class="slds-m-bottom_small "  style="font-weight: 600;  width: fit-content; ">
+                                                
+                                                <span aria-hidden="true" class="slds-avatar slds-avatar_circle slds-chat-avatar ">
+                                                                <abbr class="slds-avatar__initials slds-avatar__initials_inverse" >
+                                                                    <img class="chatroom__avatar" src={message.User__r.MediumPhotoUrl} />
+                                                                  
+                                                                </abbr>
+                                                </span>  
+                                                <!-- <div style="height: 8px; width: 8px; background-color: green; border-radius: 4px;float: left;
+                                                margin-top: 2px;
+                                                margin-right: 4px;" if:true={message.isOnline}></div>
+                                                <div if:false={message.isOnline} style="height: 8px; width: 8px; background-color: rgb(240, 9, 9); border-radius: 4px;float: left;
+                                                margin-top: 2px;
+                                                margin-right: 4px;" ></div> -->
+                                    {message.User__r.Name}.
+                                    <!-- date -->
+                                                
+                                                <div class="slds-chat-message__meta" style="float:right;
+                                                height: 28px;
+                                                display: flex; " aria-label={message.CreatedDate}>
+                                                    <lightning-formatted-date-time style="color: slategrey;align-self: center;" value={message.CreatedDate} 
+                                                        hour="2-digit" time-zone={TIME_ZONE} 
+                                                        minute="2-digit" hour12="false">
+                                                    </lightning-formatted-date-time>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template if:true={message.isMediaMessage__c} >
+                                            <div style="     display: flex;
+                                            width: 100%;
+                                            flex-direction: row;" >
+                                            <div style="display: flex;
+                                            width: 74%;">
+                                            
+                                            <a href={message.docUrl}>
+                                                
+                                                    <img src={fileImg} class="fileImgClass"  />
+                                               
+                                            
+                                            </a>
+
+                                        </div>
+                                        <br>
+                                        <div style="width: 26%; align-self: center;
+                                        " class="img">
+                                            <div style="    display: flex;
+                                            justify-content: flex-end;
+                                            margin-right: 5px;">
+                                                <img style="height: 15px; 
+                                                width: 17px;
+                                                "  src={threedotIcon} data-message-id={message.Id} onclick={handleImageClick} />
+                                            </div>
+                                            <template if:true={message.showmenu} >
+
+                                            <ul class={getListItemVisibilityClass} >
+                                              <li style="margin-bottom: 5px;">
+                                                <button  style="    width: 60px;
+                                                height: 24px;
+                                                background-color: #eef3f8;
+                                                border-block: unset;
+                                                border-inline-end: unset;
+                                                border-inline-start: unset" onclick={deleteRecords} value={message.Id}> Delete</button>
+                                              </li>
+                                            
+                                            </ul>
+                                            </template></div>
+                                            <br>
+                                            
+                                            
+                                            
+                                        </div>
+                                        <span style="
+                                            display: flex;
+                                            justify-content: flex-start; ">{message.Content__c}
+                                        </span>
+                                            
+                                        </template>
+
+                                        <template if:false={message.isMediaMessage__c}>
+                                            <div style="inline-size: 180px;      width: 100%; overflow-wrap: break-word; justify-content:flex-start; display: flex; float: right;
+                                                align-items: center;
+                                                  " >
+                                              <div style="width: 74%; display: flex;">{message.Content__c}
+                                          
+                                              <div style=" width: 3%;" >
+                                                <div style="height: 17px;
+                                                width: 18px;">
+                                                <div>
+                                                    
+                                                </div>
+                                                   
+                                                </div>
+                                                
+                                              </div>
+                                            </div>
+
+                                            <div style="width: 26%;     align-self: center;" class="img">
+                                                <div style="    display: flex;
+                                                justify-content: flex-end;
+                                                margin-right: 5px;">
+                                                    <img style="height: 15px; 
+                                                    width: 17px;
+                                                    "  src={threedotIcon} data-message-id={message.Id} onclick={handleImageClick} />
+                                                </div>
+                                                <template if:true={message.showmenu} >
+
+                                                <ul class={getListItemVisibilityClass} >
+                                                  <li style="margin-bottom: 5px;">
+                                                    <button  style="    width: 60px;
+                                                    height: 24px;
+                                                    background-color: #eef3f8;
+                                                    border-block: unset;
+                                                    border-inline-end: unset;
+                                                    border-inline-start: unset" onclick={deleteRecords} value={message.Id}> Delete</button>
+                                                  </li>
+                                                  <li>
+                                                    <button  style="   width: 60px;
+                                                    height: 24px;
+                                                    background-color: #eef3f8;
+                                                    border-block: unset;
+                                                    border-inline-end: unset;
+                                                    border-inline-start: unset"  data-id={message.Id} onclick={openModaledit} value={message.Content__c}> Edit</button>
+                                                  </li>
+                                                  <!-- <li>Item 3</li> -->
+                                                </ul>
+                                                </template></div>
+                                            </div>
+                                           
+    <template if:true={isModalOpen1} >
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Edit Message</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input type="text" value={msgValue} placeholder={inputPlaceholderText} onchange={onNameChangeEdit} style="height:60px;"></lightning-input>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_brand" onclick={updateRecords}>Save</button>
+                    <button class="slds-button slds-button_neutral" onclick={closeModaledit}>Cancel</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+<!-- </div> -->
+                                        </template>
+                                    </div>
+                                    <!-- <lightning-formatted-date-time style="color: slategrey;" value={message.CreatedDate} 
+                                                        hour="2-digit" time-zone={TIME_ZONE} 
+                                                        minute="2-digit" hour12="false">
+                                                    </lightning-formatted-date-time> -->
+                            </div>
+                           
+                            
+                            </div>
+                        </div>
+                        </li>
+                    </template>
+
+                    <template if:false={message.isCurrentUserMsg__c} >
+                        <!-- recieving the msg -->
+                        <li key={message.User__r.CreatedById} class="slds-chat-listitem slds-chat-listitem_inbound userChat" style="text-align: left;">
+                            <div class="slds-chat-message" >       
+                                <div class="slds-chat-message__body">
+                                <div class="slds-chat-message__text slds-p-around_xx-small ">
+                                    <template if:false={message.isshowImage}>
+                                        <div class="slds-m-bottom_x-small" style="font-weight: 600;  width: fit-content;"> 
+                                            <span aria-hidden="true" class="slds-avatar slds-avatar_circle slds-chat-avatar">
+                                                <abbr class="slds-avatar__initials slds-avatar__initials_inverse" >
+                                                    <img class="chatroom__avatar" src={message.User__r.MediumPhotoUrl} />
+                                                  
+                                                </abbr>
+                                            </span>
+                                            <!-- <div style="height: 8px; width: 8px; background-color: green; border-radius: 4px;float: left;
+                                            margin-top: 2px;
+                                            margin-right: 4px;" if:true={message.isOnline}></div>
+                                            <div if:false={message.isOnline} style="height: 8px; width: 8px; background-color: rgb(240, 9, 9); border-radius: 4px;float: left;
+                                            margin-top: 2px;
+                                            margin-right: 4px;" ></div> -->
+                                
+                                            <!-- {toName} -->
+                                            {message.User__r.Name}.<div class="slds-chat-message__meta" style="float: right;
+                                            margin-top: 7px;" aria-label={message.CreatedDate}>
+                                                <lightning-formatted-date-time style="color: slategrey;" value={message.CreatedDate} 
+                                                hour="2-digit" time-zone={TIME_ZONE} 
+                                                minute="2-digit" hour12="false"></lightning-formatted-date-time>
+                                            </div>
+                                        </div>
+                                        
+                                    </template>
+                                    <template if:true={message.isMediaMessage__c} >
+                                        <div></div>
+                                        
+                                        <a href={message.docUrl}><img src={fileImg} class="fileImgClass"  /></a>
+                                        <br>
+                                        <span style="padding-left: 10px;">{message.Content__c}</span>
+                                    
+                                    </template>
+                                    <template if:false={message.isMediaMessage__c} >
+                                        <p style="inline-size: 180px;
+                                    overflow-wrap: break-word;
+                                    width: fit-content;
+
+                                    justify-content: flex-start;
+                                    display: flex;">{message.Content__c} 
+                                    <!-- <lightning-button variant="destructive" label="Delete" onclick={deleteAccount} value={message.Id}>
+                                    </lightning-button>
+                                    <lightning-button variant="destructive" label="edit" onclick={handleUpdate} value={message.Id}>
+                                    </lightning-button> -->
+                                </p> 
+                                    </template>
+                                </div>
+                                
+                                </div>
+                            </div>
+                            </li>
+
+                    </template>
+                </template>
+            </div>
+            
+        </ul>
+        </section>
+    </div>
+    </template>
+
+    <div>
+        
+    </div>
+
+     
+                                
+    <!--Use template if:true to display/hide popup based on isModalOpen value--> 
+    <template if:true={isModalOpen}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" >
+               
+                <div class="slds-modal__content slds-p-around_medium slds-wrap" id="modal-content-id-1">
+                    <div>
+                        <lightning-button-icon 
+                        icon-name="utility:close"  alternative-text="Close" title="Close" onclick={closeModal}></lightning-button-icon>
+                  
+                </div>
+                  <div class="emoji-icon">
+                    <a style="cursor:pointer;" onclick={selectEmoji}    data-emoji="&#128513;" >&nbsp;   &#128513;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128514;">&nbsp; &#128514;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji=" &#128512;">&nbsp; &#128512;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128515;">&nbsp; &#128515;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128516;">&nbsp; &#128516;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128517;">&nbsp; &#128517;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji=" &#128518;">&nbsp; &#128518;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128519;">&nbsp; &#128519;</a>
+                </div>  
+                <div class="emoji-icon">
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128520;">&nbsp; &#128520;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128521;">&nbsp; &#128521;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128522;">&nbsp; &#128522;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128523;">&nbsp; &#128523;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128524;">&nbsp; &#128524;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128525;">&nbsp; &#128525;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128526;">&nbsp; &#128526;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128527;">&nbsp; &#128527;</a>
+                </div>
+                <div class="emoji-icon">
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128528;">&nbsp; &#128528;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128529;">&nbsp; &#128529;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128530;">&nbsp; &#128530;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128531;">&nbsp; &#128531;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128532;">&nbsp; &#128532;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128533;">&nbsp; &#128533;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128534;">&nbsp; &#128534;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128535;">&nbsp; &#128535;</a>
+                </div>
+                <div class="emoji-icon">
+
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128536;">&nbsp; &#128536;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128537;">&nbsp; &#128537;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128538;">&nbsp; &#128538;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128539;">&nbsp; &#128539;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128540;">&nbsp; &#128540;</a>
+                    <a style="cursor:pointer;"  onclick={selectEmoji} data-emoji="&#128541;">&nbsp; &#128541;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128542;">&nbsp; &#128542;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128543;">&nbsp; &#128543;</a>
+                </div>
+                <div class="emoji-icon">
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128544;">&nbsp; &#128544;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128545;">&nbsp; &#128545;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128546;">&nbsp; &#128546;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128547;">&nbsp; &#128547;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128548;">&nbsp; &#128548;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128549;">&nbsp; &#128549;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128550;">&nbsp; &#128550;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128551;">&nbsp; &#128551;</a>
+                </div>
+                <div class="emoji-icon">
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji=" &#128552;">&nbsp; &#128552;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128553;">&nbsp; &#128553;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128554;">&nbsp; &#128554;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128555;">&nbsp; &#128555;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128556;">&nbsp; &#128556;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji=" &#128557;">&nbsp; &#128557;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji=" &#128558;">&nbsp; &#128558;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128559;">&nbsp; &#128559;</a>
+                </div>
+                <div class="emoji-icon">
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128560;">&nbsp; &#128560;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128561;">&nbsp; &#128561;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128562;">&nbsp; &#128562;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}  data-emoji="&#128563;">&nbsp; &#128563;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji} data-emoji=" &#128564;">&nbsp; &#128564;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji} data-emoji="&#128565;">&nbsp; &#128565;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji} data-emoji="&#128566;">&nbsp; &#128566;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji} data-emoji="&#128567;">&nbsp; &#128567;</a>
+                </div>
+                <div class="emoji-icon">
+                    <a style="cursor:pointer;" onclick={selectEmoji} data-emoji="&#128577;">&nbsp; &#128577;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji=" &#128578;">&nbsp; &#128578;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji=" &#128579;">&nbsp; &#128579;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#128580;">&nbsp; &#128580;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129296;">&nbsp; &#129296;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129297;">&nbsp; &#129297;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129298;">&nbsp; &#129298;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji=" &#129299;">&nbsp; &#129299;</a>
+                </div> 
+                <div class="emoji-icon">
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129300;">&nbsp; &#129300;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129301;">&nbsp; &#129301;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129312;">&nbsp; &#129312;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129313;">&nbsp; &#129313;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129314;">&nbsp; &#129314;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129315;">&nbsp; &#129315;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129316;">&nbsp; &#129316;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129317;">&nbsp; &#129317;</a>
+                </div>
+                <div class="emoji-icon">
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129319;">&nbsp; &#129319;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129320;">&nbsp; &#129320;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129321;">&nbsp; &#129321;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129322;">&nbsp; &#129322;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129323;">&nbsp; &#129323;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129324;">&nbsp; &#129324;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129325;">&nbsp; &#129325;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129326;">&nbsp; &#129326;</a>
+                </div>
+                <div class="emoji-icon">
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129327;">&nbsp; &#129327;</a>
+                    <a style="cursor:pointer;" onclick={selectEmoji}   data-emoji="&#129488;">&nbsp; &#129488;</a>
+                </div>
+
+                </div>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <!-- <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal} title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={submitDetails} title="OK">OK</button>
+                </footer> -->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+             
+    <!-- bottom serach main div -->
+    <template  if:false={toMinimize}>
+    <div class="fixed-footer" >
+        
+        <div class="send-message-form slds-border_top " >
+             <div class="slds-box ">  
+                <div class="slds-m-around_medium">
+                    <div>
+                        <lightning-input type="text" value={msgValue}  placeholder={inputPlaceholderText} onchange={onNameChange} style="height:60px;"></lightning-input> 
+                    </div>
+                    <div  style="justify-content: center; display: flex; width: 100%; height: 40px;">
+                        <div style="align-self: center; display: flex; width: 50%; height: 40px;">
+                            <div class="image-upload slds-m-around_small" style="width: 20px; align-self: center;">
+                                <label for="file-input">
+                                     <img class="send-message-form " src={attachmenticon}/>
+                                </label>
+                            
+                                <input type="file" id="file-input"  onchange={onFileUpload}  name="uploadFile"> 
+                            </div>
+
+                            <div class="image-upload" style="width: 20px; align-self: center;">
+                                <label for="file-input">
+                                     <img class="send-message-form imageSize" src={imageicon}/>
+                                </label>
+                            
+                                <input id="file-inputAttachment" type="image"  onclick={onFileUpload} />
+                            </div>
+
+
+
+                            <div class="image-upload slds-m-left_small" style="width: 20px; align-self: center;">
+                                <label for="file-input">
+                                     <img class="send-message-form imageSize" src={gif}/>
+                                </label>
+                            
+                                <input id="file-gif" type="file"/>
+                            </div>
+                            <div class="slds-m-left_small" style="width: 20px; align-self: center;">
+                                <label >
+                                     <img class="send-message-form " style="width: 22px;cursor: pointer;" onclick={openModal} src={emoji}/>
+                                </label>
+                                
+                            </div>
+
+
+                        </div>
+
+                        <div style="align-self: center; justify-content: flex-end; display: flex; float: right; width: 50%; height: 40px;">
+                            <div style="height: 40px;  align-self: flex-end;  display: flex; justify-content: flex-end; align-items: flex-end;">
+                                <lightning-button  label="Send" onclick={Sendmsg} style="align-self: center;" > </lightning-button> 
+
+                            </div>
+                            
+                        </div>
+                       
+
+                    </div>
+                    <!-- <div class="slds-border_top">
+
+                    </div> -->
+                    <!-- <div style="justify-content: center; display: flex; width: 100%; height: 40px; background-color: brown;">
+                       
+                        <div style='float: left;width: 70%; '>
+                            <input type="file"  onclick={onFileUpload}  name="uploadFile">   
+                         </div>
+                         class="slds-m-top_small slds-m-bottom_small"
+                    <div  >
+                         <div style="float: left;width:50%; background-color: blue;height: 40px;">
+                            <div class="image-upload" style="float: left; 
+                            width: 20px;">
+                                <label for="file-input">
+                                     <img class="send-message-form " src={attachmenticon}/>
+                                </label>
+                            
+                                <input type="file" id="file-input"  onchange={onFileUpload}  name="uploadFile"> 
+                            </div>
+                           
+                           
+                        </div>
+
+                            
+                        send button style width: 69%;  
+                            
+
+                </div>
+
+                    </div> -->
+                    </div>
+                 
+              </div>  
+            </div>
+        </div>
+    </template>
+    </div>
+</template>

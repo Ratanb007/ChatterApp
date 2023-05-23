@@ -1,0 +1,296 @@
+<template>
+    <div if:true={showSpinner}>
+        <lightning-spinner variant="brand" size="large"> </lightning-spinner>
+    </div>
+<div if:false={showChatWindow}>
+    
+  
+     <a class="float" onclick={handleChatNav}>
+        <p style="color:white;float: left;margin-top: 10px;padding: 0px 10px  0px 20px;font-size: 16px;font-weight: 600;">Chat</p>
+        <lightning-icon style="border-radius: 0px;
+        " icon-name="utility:chat" alternative-text="Chat" title="Chat" class="mTop"></lightning-icon>
+    </a>
+
+    
+</div>
+
+    <div class={className}  >
+        <div class="slds-col slds-border_right chatroom__sidebar" >
+            <!-- onclick={handleMinimize} -->
+            <div class="slds-border_bottom slds-text-title_caps fixedhome-header slds-p-left_large" style=" display: flex;height:44px; width: auto; " >
+                <!-- <div class="slds-p-around_medium lgc-bg">
+                    <lightning-button-menu alternative-text="Show menu">
+                        <lightning-menu-item value="MenuItemOne" label="Menu Item One"></lightning-menu-item>
+                        <lightning-menu-item value="MenuItemTwo" label="Menu Item Two"></lightning-menu-item>
+                       
+                    </lightning-button-menu>
+                </div> -->
+              <!-- <lightning-button-icon   style="padding: inherit;"></lightning-button-icon> -->
+                <!-- icon-name={IconValue}  -->
+                <div style="height:44px; width:48px; display: flex;    align-self: center;" class="containerOverImage">
+                   
+               <img src={currentMasterUsersObject.proPicURL} style="    height: 75%;
+               width: 72%;
+               border-radius: 50%;
+               display: flex;
+               align-self: center;
+                   margin-left: 5px; "/>
+                   <div style="height: 9px; width: 9px; background-color: green;
+                   border-radius: 4px;
+                   float: left;
+                   margin-top: 2px;
+                   margin-right: 4px;
+                   position: absolute;
+                   bottom: 6px;
+                   right: 4px;
+               float: left;
+                   margin-top: 2px;
+                   margin-right: 4px;
+                   border: 1px solid;
+                   border-color: white;
+                   " ></div>
+               
+
+               <!-- </div> -->
+                </div>
+                <div style="justify-content: flex-start; display: flex;     width: 99px;">
+           <p class="slds-align_absolute-center-" style="font-size:10px ;color: black;font-weight: 600;">Messaging</p>
+        </div>
+        <div style="height: 44px; width: 151px; display: flex;    justify-content: end; align-self: center;">
+            <div style=" align-self: center;
+            margin-right: 5px;  
+            ">
+
+               <!-- here we use the group chat -->
+               <div class="slds-var-m-around_medium">
+                <lightning-button-icon icon-name="action:join_group" 
+                title="Create Groups" onclick={buttonClick}>
+               </lightning-button-icon>
+               <!-- <lightning-button-icon icon-name="utility:edit_groups"  alternative-text="Settings" title="Settings"></lightning-button-icon> -->
+            </div>
+            
+            
+                <!-- modal start template 1  popup 1st-->
+                <template if:true={isShowModal}>
+                 
+                   <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                       <div class="slds-modal__container">
+                  
+                        
+                       
+                         <!-- modal start template 3 and popup 2 open--> 
+                  
+                        <template  if:true={isModalOpen}>  
+                          <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+                              <div class="slds-modal__container">
+                              
+                                  <header class="slds-modal__header">
+                                      
+                                    <lightning-button-icon class=" slds-float_right" title="Close" icon-name="utility:close"
+                                             alternative-text="close"
+                                    variant="border"
+                                    size='medium'
+                                    onclick={closeModal}>
+                                      
+                                  </lightning-button-icon>
+                                      
+                                      
+                                       <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Group Name</h2>
+                                    </header>
+                                    
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="padding-top: 15px;
+                            padding-bottom: 25px;">
+                              <!-- <h2>Selected User </h2> -->
+                             <!--for input-->
+                          <lightning-input class="slds-align_absolute-center" placeholder="Enter Group Name" onchange={handleNameChange}></lightning-input>
+                          <!-- close for input-->
+                        </div>
+                  
+                       
+                        <footer class="slds-modal__footer">
+                            <button class="slds-button slds-button_neutral" onclick={createGroup} value={Name} >Create Group</button>
+                           <button class="slds-button slds-button_neutral" onclick={closeModal}>Cancel</button>
+                        </footer>
+                  
+                       </div>
+                          </section>
+                  
+                          <!--it is used for blur the background--> 
+                          <div class="slds-backdrop slds-backdrop_open" style="height:80%;margin-top:48px;"></div> 
+                          <!-- close it is used for blur the background--> 
+                          
+                        </template>        
+                      <!--- modal end template 3 and popup 2 close -->
+                  
+                  
+                          <!-- modal header start -->
+                              <header class="slds-modal__header">
+                                <div class="slds-float_right " >
+                                    <lightning-button-icon   title="Close" icon-name="utility:close"
+                                                    alternative-text="close"
+                                    variant="border"
+                                    size='medium'
+                                     onclick={hideModalBox}>
+                                                               
+                                  </lightning-button-icon>
+                              </div>
+                                   
+                              <h2 id="modal-heading-01" class="slds-text-heading_medium ">Select User</h2>
+                                             
+                                           </header>
+                  <!-- modal body start -->
+                              
+                  <div class="slds-modal__content slds-p-bottom_none">
+                      <lightning-card>
+                            
+                              <!--table with checkbox -->
+                              <div class="tableHeight slds-scrollable">
+                                  <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover">
+                                      <thead>
+                                          <tr class="slds-line-height_reset">
+                                              <!--this line select all records (all select chheckbox)-->
+                                              <th class="" scope="col">
+                                                  <div class="slds-truncate">
+                                                      <lightning-input onchange={handleAllSelected} type="checkbox"
+                                                         data-key="firstColumnCheckbox">
+                                                      </lightning-input>
+                                                  </div>
+                                              </th>
+                  
+                                              <th class="" scope="col">
+                                                  <div class="slds-truncate" title="Name">Name</div>
+                                              </th>
+                                              <!-- <th class="" scope="col">
+                                                  <div class="slds-truncate" title="Email">Email</div>
+                                              </th> -->
+                                          </tr>
+                                      </thead>
+                  
+                                      <tbody>
+                                          <template for:each={data} for:item="obj">
+                                              <tr key={obj.Id}>
+                                                  
+                                                  <th scope="col">   
+                                                      <div>
+                                                          <lightning-input type="checkbox" value={obj.Id} data-id={obj.Id}
+                                                              data-key="firstColumnCheckbox" onchange={handleCheckboxSelect}
+                                                              name={obj.Id}>
+                                                          </lightning-input>
+                                                      </div>
+                                                    </th>
+                                                
+                                                  <!--this line show fetch name data-->
+                                                  <th scope="col">
+                                                      <div>{obj.Name}</div>
+                                                  </th>
+                                                  <!-- <th scope="col">
+                                                      <div>{obj.Email}</div>
+                                                  </th> -->
+                                              
+                                              </tr>
+                                          </template>
+                                      </tbody>
+                                  </table>
+                              </div>
+                          
+                      </lightning-card>
+                      </div>
+    
+                    
+                  
+                      <!-- modal footer start-->
+                      <footer class="slds-modal__footer">
+                          <lightning-button label="Cancel" onclick={hideModalBox} variant="destructive" slot="actions" style="margin-right:10px;"></lightning-button>
+<!-- <lightning-button label="Broad Cast" variant="success" style="margin-right:10px;"></lightning-button> -->
+                          <lightning-button label="Create Group" onclick={getAllSelectedRecord} variant="brand" slot="actions" style="margin-right:10px;">
+                          </lightning-button>
+                       </footer>
+                       
+                      </div>
+                  </section>  
+                   <!--it is used for blur the background -->
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                      </template>
+                      
+                       <!-- modal close template 1  popup 1st-->
+        
+            </div>
+          
+                <!-- <div class="container">
+                    <img style="height: 20px;
+                width: 20px;" src={threedotIcon}  onclick={handleImageClick}/>
+
+                    <ul class={listVisibleClass}>
+                      <li>Item 1</li>
+                      <li>Item 2</li>
+                      <li>Item 3</li>
+                    </ul>
+                  </div> -->
+              
+                  <div style="height: 44px; width: 29px;   display: flex;    align-self: center; ">
+
+                    <lightning-button-icon icon-name={IconValue} onclick={handleMinimize} style=" display: flex;    align-self: center; "></lightning-button-icon>
+        
+                </div>
+            </div>
+           
+        </div>
+        <template if:false={Minimize}>
+            <div >
+             <lightning-input  placeholder="search user" type="search" value={ChatName} name="ChatName" onchange={handleSearchInputChange}
+             style="    background-color: white;
+
+             /*background-color: rgb(238, 243, 248);*/
+             width: 92%;
+             /*  display: flex;
+              align-self: center; 
+             justify-content: center;*/"></lightning-input>
+            </div>
+         </template>
+           
+            <!-- here we use the group chat -->
+                      
+        
+                                   <!-- modal close template 1  popup 1st-->
+         
+            <ul> 
+                <template for:each={result} for:item="user" if:false={Minimize} >
+                    <li key={user.userId} data-id={user.userId} data-name={user.userName} data-icon={user.proPicURL} data-value={user.lastseenTime} data-title={user.loginTime} class="slds-p-around_medium slds-border_bottom" onclick={handleChat} style="font-weight:500;">
+                        <div class="slds-grid" data-id={user.userId} data-name={user.userName} data-icon={user.proPicURL} data-value={user.lastseenTime} >
+                            <!-- <div class="slds-col slds-size_1-of-12">
+                                <span if:true={user.online}>&#128994;</span>
+                                <span if:false={user.online}>&#128308;</span>
+                            </div> -->
+                            <div data-id={user.userId} data-name={user.userName} data-icon={user.proPicURL} data-value={user.lastseenTime} data-title={user.loginTime} class="slds-col slds-size_1-of-12">
+                               <template if:true={user.proPicURL}> 
+                                <img data-id={user.userId} data-name={user.userName} src={user.proPicURL} data-icon={user.proPicURL} data-value={user.lastseenTime} data-title={user.loginTime} class="chatroom__avatar chatroom__avatar--small" />
+                               </template>
+                               <template if:false={user.proPicURL} >
+                                <lightning-icon icon-name="standard:avatar"></lightning-icon>
+                               </template>
+
+                            </div>
+                            <div data-id={user.userId} data-name={user.userName} data-icon={user.proPicURL} data-value={user.lastseenTime} data-title={user.loginTime} class="slds-col slds-size_10-of-12 chatroom__content chatroom__usernames">
+                                <p data-id={user.userId} data-name={user.userName} data-icon={user.proPicURL}  data-value={user.lastseenTime} data-title={user.loginTime} class="chatroom__username">{user.userName}</p>
+                            </div>
+                        </div>
+                    </li>
+                 </template>
+            </ul>
+        </div>  
+    
+    </div>
+    <div style="flex-direction: row; display: flex; height: 564px;  position: absolute;right: 26%;
+    top: 39%;    position: absolute;
+
+    align-items: flex-end;"  data-value="chaterMainDiv">
+        <template for:each={arrayMultipleList} for:item="chatWindow">
+            <div class="slds-col"  key={chatWindow.id} if:false={chatWindow.minimize} >
+                <c-chat-message expand={chatWindow.expand} seen={chatWindow.seen} toimgurl={chatWindow.toimgurl} user-id={chatWindow.userId} to-user-or-group-id={chatWindow.toUserOrGroupId}
+            to-name={chatWindow.toName} to-minimize={chatWindow.minimize} to-icon={chatWindow.toIcon} onclose={hideChat} onzoom={zoomExpandScreen} login={chatWindow.login}></c-chat-message>
+              </div>
+        </template>
+        
+      </div>
+       
+</template>
